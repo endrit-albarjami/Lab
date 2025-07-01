@@ -1,0 +1,6 @@
+homarr:
+  resources:
+    limits:
+      memory: "1536Mi" # Try 1.5GB, adjust as needed
+    requests:
+      memory: "1024Mi" # Request 1GB
