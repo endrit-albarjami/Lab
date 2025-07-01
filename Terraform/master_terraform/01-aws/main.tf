@@ -4,12 +4,14 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
-  }
-}
+      }
+     }
 
 # Configure the AWS Provider
-provider "aws" {
+provider "aws" 
   region = "eu-central-1"
+  access_keys="AKIA3AASPR34SJ5PT25C"
+  secret_key="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"
 }
 
 
@@ -27,6 +29,4 @@ resource "aws_vpc" "main" {
     "Name" = "Main VPC"
   }
  }
-
-
 
