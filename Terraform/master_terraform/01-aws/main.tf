@@ -9,24 +9,24 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "eu-central-1"
-  access_keys="AKIA3AASPR34SJ5PT25C"
-  secret_key="kRf5UciACH6EAg5I1x6XUgdV/Ze9z37T01pC1GYk"
+  region = "eu-central-1" # Ensure this is correct for your desired region
+  # REMOVE access_key and secret_key if they are still here!
+  # They MUST NOT be committed to Git.
 }
 
-
-
-# resource "<provider>_<resource_type>" "local_name" {
-#   argument1 = value1
-#   argument2 = value2
-#   ....
-# }
-
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.vpc_cidr_block # Use the variable here!
 
   tags = {
     "Name" = "Main VPC"
   }
- }
+}
 
+resource "aws_subnet" "web" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.web_subnet # Use the variable here!
+  availability_zone = "eu-central-1a" # Ensure this matches your region's AZ, or make it a variable too
+  tags = {
+    "Name" = "Web Subnet"
+  }
+}
