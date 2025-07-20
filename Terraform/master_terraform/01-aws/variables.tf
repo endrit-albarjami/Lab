@@ -1,11 +1,24 @@
 variable "vpc_cidr_block" {
-  default     = "20.0.0.0/16"
+  default     = "10.0.0.0/24"
   description = "CIDR Block for the VPC"
   type        = string
 }
 
 variable "web_subnet" {
-  default     = "20.0.10.0/24"
+  default     = "10.0.10.0/24"
   description = "Web Subnet"
   type        = string
+}
+
+
+variable "subnet_zone" { 
+  
+}
+
+variable "main_vpc_name" {
+  description = "Name for the main VPC"
+  type        = string
+}
+
+variable "my_public_ip" {
 }

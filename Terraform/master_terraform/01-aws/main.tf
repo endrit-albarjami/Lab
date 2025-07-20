@@ -14,19 +14,69 @@ provider "aws" {
   # They MUST NOT be committed to Git.
 }
 
+# Create a VPC
 resource "aws_vpc" "main" {
-  cidr_block = var.vpc_cidr_block # Use the variable here!
-
+  cidr_block = var.vpc_cidr_block
   tags = {
-    "Name" = "Main VPC"
+    "Name" = "Production ${var.main_vpc_name}"
   }
 }
 
 resource "aws_subnet" "web" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.web_subnet # Use the variable here!
-  availability_zone = "eu-central-1a" # Ensure this matches your region's AZ, or make it a variable too
+  availability_zone = var.subnet_zone # Ensure this matches your region's AZ, or make it a variable too
   tags = {
     "Name" = "Web Subnet"
   }
 }
+
+resource "aws_default_route_table" "main_vpc_default_rt" {
+  default_route_table_id = aws_vpc.main.default_route_table_id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.my_web_igw.id
+  }
+
+  tags = {
+    "Name" = "my-default-rt"
+  }
+
+} 
+
+# Create an Internet Gateway
+resource "aws_internet_gateway" "my_web_igw" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "My Web Internet Gateway"
+  }
+}
+
+resource "aws_default_security_group" "default_sec_group" {
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    # cidr_blocks = [var.my_public_ip]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
