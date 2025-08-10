@@ -64,8 +64,8 @@ resource "aws_default_security_group" "default_sec_group" {
   }
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -100,6 +100,7 @@ resource "aws_instance" "my_vm" {
   vpc_security_group_ids      = [aws_default_security_group.default_sec_group.id]
   associate_public_ip_address = true
   key_name                    = "production_ssh_key"
+  user_data                   = file("entry-script.sh")
 
   # Corrected: Use user_data to execute the script on instance launch
   user_data = <<-EOF
