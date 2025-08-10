@@ -1,0 +1,19 @@
+# Terraform specific ignores
+.terraform/          # Local .terraform directory
+*.tfstate            # Terraform state files
+*.tfstate.backup     # Terraform state backup files
+.terraform.lock.hcl  # Terraform dependency lock file
+crash.log            # Terraform crash logs
+*.tfvars             # Terraform variable definition files (if sensitive)
+*.tfvars.json        # Terraform variable definition JSON files (if sensitive)
+
+# IDE/Editor specific ignores
+*.swp                # Vim swap files
+*~                   # Backup files created by some editors
+*.bak                # Generic backup files
+
+# Generated output files
+outputs.json         # Your generated JSON output file
+
+# Untracked directories (if not meant for version control)
+../replacing_infrastructure/
